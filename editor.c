@@ -1,5 +1,8 @@
 #include <stdio.h>
 #include "header/msx_fusion.h"
+#include "header/vdp_graph2.h"
+#include "header/vars_msxSystem.h"
+#include "header/vdp_sprites.h"
  
 #define COF 80
 #define CON 65
@@ -14,21 +17,51 @@
 
 //Some global vars
 int x,y;
-int mapa[8][8];
+int mapa[16][16];
 
+//created this pattern for test for now
+static const unsigned int cross_pattern[] = {
+  0b1111111111111111,
+  0b1001001110010011,
+  0b1001000110010011,
+  0b1111111111111111,
+  0b1001000110010011,
+  0b1001000110010011,
+  0b1001001110010011,
+  0b1111111111111111,
+  0b1001001110010011,
+  0b1001000110010011,
+  0b1111111111111111,
+  0b1001000110010011,
+  0b1001000110010011,
+  0b1001001110010011,
+  0b1001001110010011,  
+  0b1111111111111111
+};
 
 //
 // For now, this is a table 8x8 (TODO: to be implemented later)
 //
-void tabela8(int x1, int y1)
+void tabela16(int x1, int y1)
 {
 	int j;
 
-	for (j=0; j<8; j++) {
+	for (j=0; j<16; j++) {
 		Locate(x1,y1+j);
-		Print("........");
+		Print("................");
 	}
 }
+
+//
+// Update sprite in real time
+//
+void updateSprite(void)
+{
+	PutSprite( 0, 0, 20, 20,  (0 & 7) + 8 );
+	
+}
+ 
+
 
 //
 // Main program.
@@ -45,10 +78,10 @@ void laco()
 		Locate(0,0);
 		PrintNumber(c);
 
-	    if      (c==AESQ) { if (x==0) {x=8;}  x=x-1;}
-		else if (c==ADIR) { if (x==7) {x=-1;} x=x+1;}
-        else if (c==ACIM) { if (y==0) {y=8;}  y=y-1;}
-		else if (c==ABAI) { if (y==7) {y=-1;} y=y+1;}
+	    if      (c==AESQ) { if (x==0)  {x=16;}  x=x-1;}
+		else if (c==ADIR) { if (x==15) {x=-1;}  x=x+1;}
+        else if (c==ACIM) { if (y==0)  {y=16;}  y=y-1;}
+		else if (c==ABAI) { if (y==15) {y=-1;}  y=y+1;}
 		else if (c==AESP) { if (mapa[x][y]==0) 
 			                {mapa[x][y]=1;
 		                    }
@@ -62,6 +95,7 @@ void laco()
         {
             if ( mapa[x][y] ==0 ) Print("X"); else Print(".");
         	Locate(x+BOXX,y+BOXY);
+        	updateSprite();
         }           
 
 	} while (c != AESC ); 
@@ -76,13 +110,18 @@ void main(void)
 	Screen(1);
  	Cls();
 
+ 	//set Sprite table
+	SpriteReset();
+	Sprite16();
+	SpriteSmall();
+	SetSpritePattern( 0, Sprite32Bytes(cross_pattern), 256 );
+
+
  	x=0;
- 	y=0;
- 	tabela8(BOXX,BOXY);
- 
+  	y=0;
+ 	tabela16(BOXX,BOXY);
     Locate(x+BOXX,y+BOXY);
     laco();
-
 
  	Exit(0);
 }
