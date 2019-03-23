@@ -20,8 +20,29 @@ int x,y;
 int mapa[16][16];
 
 //created this pattern for test for now
+
+#ifdef __DEBUG  
 static const unsigned int cross_pattern[] = {
   0b1111111111111111,
+  0b1000000000000001,
+  0b1000000000000001,
+  0b1000000000000001,
+  0b1000000000000001,
+  0b1000000000000001,
+  0b1000000000000001,
+  0b1000000000000001,
+  0b1000000000000001,
+  0b1000000000000001,
+  0b1000000000000001,
+  0b1000000000000001,
+  0b1000000000000001,
+  0b1000000000000001,
+  0b1000000000000001,  
+  0b1111111111111111
+};
+#else
+static const unsigned int cross_pattern[] = {
+  0b0000000000000000,
   0b0000000000000000,
   0b0000000000000000,
   0b0000000000000000,
@@ -36,8 +57,9 @@ static const unsigned int cross_pattern[] = {
   0b0000000000000000,
   0b0000000000000000,
   0b0000000000000000,  
-  0b1111111111111111
+  0b0000000000000000
 };
+#endif
 
 // --------------------------------------------------------------------
 // For now, this is a table 8x8 (TODO: to be implemented later)
@@ -70,8 +92,10 @@ void laco()
   {   
     c=WaitKey();  
     //for now, showing the ascii cursor in the 0,0 (remove)
-    Locate(0,0);
-    PrintNumber(c);
+    #ifdef __DEBUG        
+      Locate(0,0);
+      PrintNumber(c);
+    #endif
 
     if      (c==AESQ) { if (x==0)  {x=16;}  x=x-1;}
     else if (c==ADIR) { if (x==15) {x=-1;}  x=x+1;}
