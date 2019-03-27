@@ -4,20 +4,22 @@
 #include "header/vars_msxSystem.h"
 #include "header/vdp_sprites.h"
  
-#define COF 80
-#define CON 65
-#define AESQ 29
-#define ADIR 28
-#define ACIM 30
-#define ABAI 31
-#define AESC 27
-#define AESP 32
-#define BOXX 5
-#define BOXY 3
+#define __DEBUG 0 
+#define COF 80    //Char for ON in the grid.
+#define CON 65    //Char for OFF in the grid.
+#define AESQ 29   //CHR for left char
+#define ADIR 28   //CHR for right char
+#define ACIM 30   //CHR for up char
+#define ABAI 31   //CHR for down char
+#define AESC 27   //CHR for ESCAPE char
+#define AESP 32   //CHR for SPACE char
+#define BOXX 5    //Initial position on the screen of the box. (x)
+#define BOXY 3    //Initial position on the screen of the box. (y)
 
 //Some global vars
-int x,y;
+int x,y;             //these are the current coordinates 
 int mapa[16][16];
+int cor;             //from 0 to 15
 
 //created this pattern for test for now
 
